@@ -34,3 +34,106 @@ A의 요소를 가지고 있는 노드의 포인터 변수가 가리키는 노�
 다시 아래의 그림처럼 B와 C사이의 링크를 끊고 B는 D로 연결, D는 다시 C로 연결하여 삽입을 하면된다.
 ![06](images/06.png)
 논리적 순서만 일치하면 되므로 위와 같이 물리적 순서가 맞지 않더라도 상관이 없다.
+
+### C를 이용하여 간단한 연결 리스트 구현
+
+~~~c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node* head = NULL;
+
+//노드 구조체 선언
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+//새로운 노드 생성
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node *) malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+
+    return node;
+}
+
+int nodeLen() {
+    int i = 0;
+    struct Node* curr = head;
+    while(curr != NULL) {
+        curr = curr->next;
+        i++;
+    }
+
+    return i;
+}
+
+//노드 추가
+void addNode(int value) {
+    struct Node* node = newNode(value);
+
+    struct Node* curr = head;
+
+    while(curr->next != NULL) {
+        curr = curr->next;
+    }
+
+    curr->next = node;
+}
+
+//노드 삭제
+void deleteNode(int index) {
+    if (index >= nodeLen(head)) {
+        printf("존재하지 않는 노드입니다.");
+        return;
+    }
+
+    if (index == 0) {
+        struct Node* temp = head;
+        struct Node* holder = head->next;
+
+        head = holder;
+        free(temp);
+        return;
+    }
+
+    struct Node* curr = head;
+
+    for (int i = 0; i < index - 1; i++) {
+        curr = curr->next;
+    }
+
+    free(curr->next);
+    curr->next = curr->next->next;
+}
+
+int getNode(int index) {
+    if (index >= nodeLen(head)) {
+        printf("존재하지 않는 노드입니다.");
+        return -1;
+    }
+
+    struct Node* curr = head;
+
+    for (int i = 0; i < index; i++) {
+        curr = curr->next;
+    }
+
+    return curr->data;
+}
+
+int main() {
+    head = newNode(100);
+    addNode(1);
+    addNode(2);
+    addNode(3);
+
+    deleteNode(0);
+    deleteNode(1);
+
+    printf("%d\n", getNode(0));
+    printf("%d\n", getNode(1));
+    printf("%d", nodeLen());
+}
+~~~
