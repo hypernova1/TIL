@@ -73,4 +73,67 @@
 
 ![10.jpg](images/10.jpg)
 
-후위 순회는 먼저 S<sub>L</sub> 서브 트리를 방문 후 루트 노드를 방문한다. (S<sub>L</sub>로 가기 위해 루트 노드를 지나가긴 하지만 방문과는 다르다.) S<sub>L</sub>의 루트는 B이고 다시 서브트리인 S<sub>LL</sub>, S<sub>LR</sub>로 나뉘기 때문에 왼쪽 서브트리인 S<sub>LL</sub>의 왼쪽 잎 노드 G부터 순회를 시작한다. 그 후 오른쪽 잎 노드인 H를 방문하면 S<sub>LL</sub>의 방문이 끝나고 S<sub>LL</sub>의 루트 노드인 D를 방문한다. S<sub>LL</sub>의 방문이 끝났기 때문에 이어서 S<sub>LR</sub>을 순회하고 모든 과정을 반복하게 되면 G-H-D-I-J-E-B-K-L-F-C-A 순으로 순회가 된다.
+후위 순회는 먼저 S<sub>L</sub> 서브 트리를 방문 후 루트 노드를 방문한다. (S<sub>L</sub>로 가기 위해 루트 노드를 지나가긴 하지만 방문과는 다르다.) S<sub>L</sub>의 루트는 B이고 다시 서브트리인 S<sub>LL</sub>, S<sub>LR</sub>로 나뉘기 때문에 왼쪽 서브트리인 S<sub>LL</sub>의 왼쪽 잎 노드 G부터 순회를 시작한다. 그 후 오른쪽 잎 노드인 H를 방문하면 S<sub>LL</sub>의 방문이 끝나고 S<sub>LL</sub>의 루트 노드인 D를 방문한다. S<sub>LL</sub>의 방문이 끝났기 때문에 이어서 S<sub>LR</sub>을 순회하고 모든 과정을 반복하게 되면 G-H-D-I-J-E-B-K-L-F-C-A 순으로 순회가 된다. 또한 컴퓨터의 컴파일러는 작성된 코드의 수식을 후위 표기법으로 바꾸어 트리로 구성 후 후위 순회로 계산한다.
+
+![11](images/11.png)
+
+### C를 이용한 순회 알고리즘 및 노드 개수 세기(순환 호출)
+
+~~~c
+struct node {
+    struct node *left;
+    struct node *right;
+    int info;
+};
+
+struct node *nodeptr;
+
+//전위 순회
+void preOrder(struct node *tree_ptr) {
+    if (tree_ptr) {
+        printf("%d", tree_ptr->info);
+        preOrder(tree_ptr->left);
+        preOrder(tree_ptr->right);
+    }
+}
+
+//중위 순회
+void inOrder(struct node *tree_ptr) {
+    if (tree_ptr) {
+        inOrder(tree_ptr->left);
+        printf("%d", tree_ptr->info);
+        inOrder(tree_ptr->right);
+    }
+}
+
+//후위 순회
+void postOrder(struct node *tree_ptr) {
+    if (tree_ptr) {
+        postOrder(tree_ptr->left);
+        postOrder(tree_ptr->right);
+        printf("%d", tree_ptr->info);
+    }
+}
+
+//노드 개수 세기
+int getNodeCount(struct node *root) {
+    if (!root) return 0;
+    int result = 1;
+    result += getNodeCount(root->left);
+    result += getNodeCount(root->right);
+    return result;
+}
+~~~
+
+### 이진 트리 생성, 삽입, 삭제
+
+이진 트리의 생성은 이중 연결 리스트를 사용하여 구현하면 된다. 먼저 루트 노드를 생성한 뒤 자식 노드로 연결할 하나 더 생성한 다음 원쪽이나 오른쪽 포인터에 생성된 노드의 주소 값을 넣어주면 된다. 그렇게 되면 나머지 방향의 포인터는 null 값을 가지고 아래와 같은 모양이 된다.
+
+![11](images/12.png)
+
+그런데 이 만들어진 트리를 이미 포인터 값이 존재하는 다른 트리의 노드에 연결하고 싶다면 문제가 발생한다. 바로 원래 있던 노드의 값이 이탈되면서** 실제론 사용되지 않지만 메모리만 차지하는 메모리 누수가 발생하기 때문이다. 이러한 문제는 프로그램에서 심각한 문제를 일으킬 수 있기 때문에 주의해야 한다.** 만약 이러한 문제를 발생 시키지 않으려면 원래 있던 노드를 삭제 후 메모리를 반환하고 그 자리에 삽입될 트리를 넣어야 할 것이다. 만약 삭제해야 될 노드가 잎 노드라면 포인터 값을 null로 지정 후 메모리를 반환하면 되지만 노드가 잎이 아니라면 그 노드의 자식 노드를 어떻게 처리해야 할지 결정한 후 삽입을 해야한다. 이 결정은 전적으로 프로그래머의 몫이 될 것이다.
+
+### C를 이용한 이진 트리의 노드 개수 세기
+
+
+
