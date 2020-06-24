@@ -1,1 +1,18 @@
-# Today I Learn
+# Today I Learn 🔥
+
+그날그날 배운 것들을 정리하는 저장소입니다. 한 번 정리된 내용은 잘못된 이해를 바탕으로 작성된 부분이 있을 수 있기 때문에 자주 읽으며 조금씩 다듬어 나갈 예정입니다. 기본적으로 컴퓨터 과학에 대한 지식, 프로그래밍 관련 지식을 정리해 나갈 예정이며, 영어와 같은 제 2외국어의 학습 내용도 정리될 수 있습니다. **잘못된 개념에 대한 PR 날려 주시면 대단히 감사하겠습니다.** 😄 
+
+## 목차
+
+[자료구조](https://github.com/hypernova1/TIL/tree/master/data%20structure)
+* [배열](https://github.com/hypernova1/TIL/tree/master/data%20structure/array)
+* [연걸리스트](https://github.com/hypernova1/TIL/tree/master/data%20structure/linked%20list)
+* [스택](https://github.com/hypernova1/TIL/tree/master/data%20structure/stack)
+* [큐](https://github.com/hypernova1/TIL/tree/master/data%20structure/queue)
+* [트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree)
+
+[자바로 구현하는 자료구조](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java/linked%20list)
+
+
+[Effective Java](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java)
+* [연결리스트](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java/linked%20list)
