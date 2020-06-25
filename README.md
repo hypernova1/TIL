@@ -6,10 +6,22 @@
 
 [자료구조](https://github.com/hypernova1/TIL/tree/master/data%20structure)
 * [배열](https://github.com/hypernova1/TIL/tree/master/data%20structure/array)
-* [연걸리스트](https://github.com/hypernova1/TIL/tree/master/data%20structure/linked%20list)
+* [연결리스트](https://github.com/hypernova1/TIL/tree/master/data%20structure/linked%20list)
 * [스택](https://github.com/hypernova1/TIL/tree/master/data%20structure/stack)
 * [큐](https://github.com/hypernova1/TIL/tree/master/data%20structure/queue)
 * [트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree)
+  * [이진 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/binary%20tree)
+  * [스레드 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/thread%20tree)
+  * [선택 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/selection%20tree)
+  * [힙](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/heap)
+  * [숲](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/forest)
+  
+  * [이진 탐색 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/BS%20tree)
+  * [휴리스틱 알고리즘을 이용한 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/huristic)
+  * [다원 탐색 트리]()
+    * [m원 탐색 트리]()
+    * [B 트리]()
+
 
 [자바로 구현하는 자료구조](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java/linked%20list)
 * [연결리스트](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java/linked%20list)
