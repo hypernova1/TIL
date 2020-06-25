@@ -18,9 +18,9 @@
   
   * [이진 탐색 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/BS%20tree)
   * [휴리스틱 알고리즘을 이용한 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/huristic)
-  * [다원 탐색 트리]()
-    * [m원 탐색 트리]()
-    * [B 트리]()
+  * [다원 탐색 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/multi%20way%20search%20tree)
+    * [m원 탐색 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/multi%20way%20search%20tree/m-way%20search%20tree)
+    * [B 트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree/multi%20way%20search%20tree/b%20tree)
 
 
 [자바로 구현하는 자료구조](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java/linked%20list)
