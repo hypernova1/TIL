@@ -98,4 +98,32 @@ testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6
     ~~~
 
 * `@Disabled`
+  
   * 전체 테스트 실행시 무시된다.
+
+
+### 테스트 이름 표시하기
+
+* `@DisplayNameGeneration`
+
+  * 클래스, 메서드에 사용 가능
+
+  * 클래스 내의 모든 메서드에 적용 됨
+
+  * ~~~java
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    public class Test {
+      //...
+    ~~~
+
+* `@DisplayName`
+
+  * 메서드에 사용 가능
+
+  * ~~~java
+    @Test
+    @DisplayName("테스트 만들기")
+    void test() {
+      //...
+    ~~~
+
