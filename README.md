@@ -21,4 +21,6 @@ Java
 
 * [Effective Java](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java)
 
+[MSA](https://github.com/hypernova1/msa-with-spring-cloud)
+
 [Rust 튜토리얼](https://github.com/hypernova1/rust-tutorial)
