@@ -21,7 +21,7 @@ Java
 
 * [JUnit 5](https://github.com/hypernova1/TIL/tree/master/java/junit)
 
-* [Effective Java](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java)
+* [Effective Java](https://github.com/hypernova1/TIL/tree/master/effective%20java)
 
 [MSA](https://github.com/hypernova1/msa-with-spring-cloud)
 
