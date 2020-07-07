@@ -457,6 +457,7 @@ MemberService
 public interface MemberService {
     Optional<Member> findById(Long memberId);
     void validate(Long memberId);
+    void notify(Study study);
 }
 ~~~
 
@@ -512,7 +513,7 @@ class StudyServiceTest {
 ### Mock 객체 Stubbing
 * Stubbing: Mock 객체의 행동을 프로그래머가 정의하는 것
 
-#### 모든 Mock 객체의 반환 값
+#### Mock 객체의 반환 값
 * Null: null
 * Optional: 비어있는 Optinoal
 * Primitive 타입: 기본 값 (ex boolean: false)
@@ -556,6 +557,17 @@ void createStudy() {
   })
 
   assertEquals(Optional.empty(), studyService.findById(1L))
+}
+~~~
 
+### Mock 객체 확인
+~~~java
+@Test
+void test() {
+  Study study = new Study();
+  memberService.notify(study);
+
+  //몇 번 호출했는지 확인
+  verify(memberService, times(1)).notify(any());
 }
 ~~~
