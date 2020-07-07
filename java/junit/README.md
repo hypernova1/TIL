@@ -456,6 +456,7 @@ MemberService
 ~~~java
 public interface MemberService {
     Optional<Member> findById(Long memberId);
+    void validate(Long memberId);
 }
 ~~~
 
@@ -490,6 +491,8 @@ class StudyServiceTest {
     //StudyRepository repository = Mockito.mock(StudyRepository.class);
 
     StudyService studyService = new StudyService(memberService, repository);
+
+    assertNotNull(studyService);
   }
 }
 ~~~
@@ -500,6 +503,59 @@ class StudyServiceTest {
   @Test
   void createStudy2(@Mock MemberService memberService, @Mock StudyRepository studyRepository) {
     StudyService studyService = new StudyService(memberService, repository);
+
+    assertNotNull(studyService);
   }
+}
+~~~
+
+### Mock 객체 Stubbing
+* Stubbing: Mock 객체의 행동을 프로그래머가 정의하는 것
+
+#### 모든 Mock 객체의 반환 값
+* Null: null
+* Optional: 비어있는 Optinoal
+* Primitive 타입: 기본 값 (ex boolean: false)
+* Collection: 비어있는 Collection
+* void: 예외를 던지지 않고 아무 일도 발생하지 않는다.
+
+~~~java
+@Test
+void createStudy() {
+  Member member = new Member();
+  member.setId(1L);
+  member.setEmail("hypemova@gmail.com");
+
+  //stubbing
+  when(memberService.findById(1L)).thenReturn(Optional.of(member));
+
+  Study study = new Study(10, "java");
+
+  Optional<Member> optional = </Member>studyService.findById(1L);
+
+  assertEquals("hypemova@gmail.com", optional.get().getEmail()); //통과
+
+  //예외 stubbing
+  doThrow(new IllegalArgumentException()).when(memberService).validate(1L);
+
+  assertThrows(IllegalArgumentException.class, () -> {
+    memberService.validate(1L);
+  });
+
+  //여러 개 stubbing
+  when(memberService.findById(any()))
+      .thenReturn(Optional(member))
+      .thenThrow(new RuntimeException())
+      .thenTreutn(Optional.empty());
+
+  Optional<Member> optional2 = memberService.findById(1L);
+  assertEquals("hypemova@gmail.com", optional2.get().getEmail());
+
+  assertThrows(RuntimeException.class, () -> {
+    memberService.findById(1L);
+  })
+
+  assertEquals(Optional.empty(), studyService.findById(1L))
+
 }
 ~~~
