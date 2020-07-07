@@ -1,5 +1,8 @@
 # JUnit
 
+* [JUnit 5](#JUnit-5)
+* [Mockito](#Mockito)
+
 자바 개발자가 가장 많이 사용하는 테스팅 프레임워크
 
 ## JUnit 5
@@ -392,3 +395,111 @@ class Test {
 }
 ~~~
 
+## Mockito
+Mock 객체를 쉽게 만들고 관리하고 검증할 수 있는 방법을 제공
+* Mock: 진짜 객체와 비슷하게 동작하지만 프로그래머가 직접 객체의 행동을 관리하는 객체
+
+#### 의존성 추가 방법
+
+스프링 부트(2.2+) 프로젝트를 만들거나, 아래와 같이 직접 의존성 추가
+
+#### gradle 의존성 추가
+~~~
+testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
+testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.3.3'
+~~~
+
+#### maven 의존성 추가
+~~~
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>3.3.3</version>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-junit-jupiter</artifactId>
+    <version>3.3.3</version>
+    <scope>test</scope>
+</dependency>
+~~~
+
+### Mock 객체 만들기
+
+#### Mock이 없는 경우
+
+StudyService
+~~~java
+public class StudyService {
+
+    private final MemberService memberService;
+    private final StudyRepository studyRepository;
+
+    public StudyService(MemberService memberService, StudyRepository studyRepository) {
+        assert memberService != null;
+        assert studyRepository != null;
+        this.memberService = memberService;
+        this.studyRepository = studyRepository;
+    }
+
+    public Study createNewStudy(Long memberId, Study study) {
+        Optional<Member> member = memberService.findById(memberId);
+        study.setOwner(member.orElseThrow(() -> new IllegalArgumentException("Member doesn't exit for id: '" + memberId + "'")));
+        return studyRepository.save(study);
+    }
+}
+~~~
+
+MemberService
+~~~java
+public interface MemberService {
+    Optional<Member> findById(Long memberId);
+}
+~~~
+
+`StudyService`는 생성자에 인자가 필요하고 `MemberService`와 `StudyRepository`는 인터페이스로만 선언되어 있다. 이렇게 되면 테스트를 작성시에 매우 불편하며 현 상황에서는 MemberService, StudyRepository를 주입할 수도 없다.(익명클래스로 구현하하여 주입하면 되긴 하지만 너무 부담스럽다.)
+~~~java
+
+class MemberServiceTest {
+  @Test
+  void createStudy() {
+    MemberService memberService = new MemberService(); //인스턴스로 만들 수 없음!
+    StudyRepository repository = new StudyRepository(); //안스턴스로 만들 수 없음!
+
+    StudyService studyService = new StudyService(memberService, repository); //Error! 
+  }
+
+}
+~~~
+
+#### Mocking을 하여 문제 해결
+~~~java
+@ExtendWith(MockitoExtention.class)
+class StudyServiceTest {
+
+  @Mock
+  MemberService memberService;
+  @Mock
+  StudyRepository studyRepository;
+
+  @Test
+  void createStudy() {
+    //MemberService memberService = Mockito.mock(MemberService.class);
+    //StudyRepository repository = Mockito.mock(StudyRepository.class);
+
+    StudyService studyService = new StudyService(memberService, repository);
+  }
+}
+~~~
+or
+~~~java
+@ExtendWith(MockitoExtention.class)
+class StudyServiceTest {
+  @Test
+  void createStudy2(@Mock MemberService memberService, @Mock StudyRepository studyRepository) {
+    StudyService studyService = new StudyService(memberService, repository);
+  }
+}
+~~~
