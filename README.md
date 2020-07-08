@@ -6,7 +6,7 @@
 
 [자료구조](https://github.com/hypernova1/TIL/tree/master/data%20structure)
 * [배열](https://github.com/hypernova1/TIL/tree/master/data%20structure/array)
-* [연걸리스트](https://github.com/hypernova1/TIL/tree/master/data%20structure/linked%20list)
+* [연결리스트](https://github.com/hypernova1/TIL/tree/master/data%20structure/linked%20list)
 * [스택](https://github.com/hypernova1/TIL/tree/master/data%20structure/stack)
 * [큐](https://github.com/hypernova1/TIL/tree/master/data%20structure/queue)
 * [트리](https://github.com/hypernova1/TIL/tree/master/data%20structure/tree)
@@ -19,4 +19,10 @@
 Java
 * [JPA 시작하기](https://github.com/hypernova1/getting-started-jpa)
 
-* [Effective Java](https://github.com/hypernova1/TIL/tree/master/data%20structure%20in%20java)
+* [JUnit 5](https://github.com/hypernova1/TIL/tree/master/java/junit)
+
+* [Effective Java](https://github.com/hypernova1/TIL/tree/master/effective%20java)
+
+[MSA](https://github.com/hypernova1/msa-with-spring-cloud)
+
+[Rust 튜토리얼](https://github.com/hypernova1/rust-tutorial)
