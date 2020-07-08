@@ -1,9 +1,10 @@
-public class SinglyLinkedList<T> {
+public class SinglyLinkedList<T> implements LinkedList<T> {
 
     private Node<T> head;
     private int size;
 
     //삽입 함수
+    @Override
     public void add(T t) {
         //새로운 노드 생성
         Node<T> node = new Node<>(t);
@@ -24,6 +25,7 @@ public class SinglyLinkedList<T> {
     }
 
     //중간 삽입 함수
+    @Override
     public void add(int index, T t) {
         //새로운 노드 생성
         Node<T> node = new Node<>(t);
@@ -49,7 +51,9 @@ public class SinglyLinkedList<T> {
         //기존 요소의 다음 요소에 새로운 요소 할당
         temp.next = node;
     }
+
     //요소 가져오기
+    @Override
     public T get(int index) {
         Node<T> temp = head;
         for (int i = 0; i < index; i++) {
@@ -59,6 +63,7 @@ public class SinglyLinkedList<T> {
     }
 
     //요소 삭제
+    @Override
     public void delete(int index) {
         //0번째 요소를 삭제한다면 head의 다음 요소를 head로 할당
         if (index == 0) {
