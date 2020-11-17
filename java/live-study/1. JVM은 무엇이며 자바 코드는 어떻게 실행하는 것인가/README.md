@@ -108,7 +108,13 @@ public class MyClass {
 
 ## JDK와 JRE의 차이
 
-**JDK**는 *Java Development Kit*의 약자로 개발에 필요한 도구 모음입니다. `javac`(컴파일러), `jdb`(디버거), `javap`(역어셈블러) 등 개발시에 필요한 유용한 프로그램 들이 포함되어있습니다. JDK는 오라클에서 제공하는 Oracle JDK와 Open JDK로 나뉘어져 있으며 Open JDK는 여러 벤더사(오라클, 아마존, 레드햇 등)에서 만들고 관리하지만 동일한 스펙을 구현하였기 때문에 각 JDK 마다의 기능 차이는 거의 없습니다. **JRE**는 *Java Runtime Enviroment*의 약자로 자바 실행에 필요한 환경을 제공해줍니다. JVM, 클래스 로더 등이 이에 해당합니다. JRE는 JDK에 포함되어 있습니다.
+### JDK
+
+**JDK**는 *Java Development Kit*의 약자로 개발에 필요한 도구 모음입니다. `javac`(컴파일러), `jdb`(디버거), `javap`(역어셈블러) 등 개발시에 필요한 유용한 프로그램 들이 포함되어있습니다. JDK는 오라클에서 제공하는 Oracle JDK와 Open JDK로 나뉘어져 있으며 Open JDK는 여러 벤더사(오라클, 아마존, 레드햇 등)에서 만들고 관리하지만 동일한 스펙을 구현하였기 때문에 각 JDK 마다의 기능 차이는 거의 없습니다. 
+
+### JRE
+
+**JRE**는 *Java Runtime Enviroment*의 약자로 자바 실행에 필요한 환경을 제공해줍니다. JVM, 클래스 로더 등이 이에 해당합니다. JRE는 JDK에 포함되어 있습니다.
 
 ### 참고
 https://m.blog.naver.com/2feelus/220738480797  

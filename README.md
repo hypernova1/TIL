@@ -17,10 +17,9 @@
 [알고리즘](https://github.com/hypernova1/algorithm)
 
 Java
+* [live-study](https://github.com/hypernova1/TIL/tree/master/java/live-study)
 * [JPA 시작하기](https://github.com/hypernova1/getting-started-jpa)
-
 * [JUnit 5](https://github.com/hypernova1/TIL/tree/master/java/junit)
-
 * [Effective Java](https://github.com/hypernova1/TIL/tree/master/effective%20java)
 
 [MSA](https://github.com/hypernova1/msa-with-spring-cloud)
