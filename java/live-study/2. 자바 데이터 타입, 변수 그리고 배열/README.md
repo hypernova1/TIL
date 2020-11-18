@@ -63,9 +63,101 @@ name = 1; //error
 |---|---|---|--|
 |boolean|1 bit|true, false|false|
 |byte|1 byte|-128 ~ 127|0|
-|char|2 bytes|0 ~ 65,535|'\u0000'|
+|char|2 bytes|'\u0000' ~ 'uFFFF'|'\u0000'|
 |short|2 bytes|-32,768 ~ 32,767|0|0|
 |int|2 bytes|-2,147,483,684 ~ 2,147,483,647|0|
 |long|8 bytes|-9,223,372,036,854,775,808 ~ 9,223,372,036,854,775,807|0L|
 |float|4 bytes|-3.4E+38의 근사값 ~ 3.4E+38의 근사값|0.0f|
 |double|8 bytes|-1.7E+308의 근사값 ~ 1.7E+308의 근사값|0.0|
+
+원시타입은 크게 숫자, 문자(char), 논리형(boolean)으로 구분됩니다. 숫자는 다시 정수(byte, short, int, long)와 실수(float, double)로 나뉩니다. 다만 실수형은 정확한 값이 아닌 부동소수점을 이용하기 때문에 실제값과 오차가 발생할 수 있습니다. 따라서 정확한 값이 필요할 때는 `BitDecimal`이라는 타입을 사용해야합니다.
+
+## 원시(Primitive) 타입과 참조(Referece) 타입
+
+자바는 원시 타입과 참조 타입으로 나뉩니다. 원시 타입은 방금 전 설명했던 것 처럼 고정된 범위를 가지며 자바 메모리 영역 중 Stack 영억에 저장되고 메서드가 종료되면 바로 제거가 됩니다. 반면 참조 타입은 Heap 영역에 저장이 되며 동적인 크기로 생성되는, 클래스 기반으로 만들어지는 인스턴스 입니다. 변수에 직접적인 값이 저장되는 것이 아니라 힙영역에 값이 저장되면 해당 주소값과 연결해서 사용하게 됩니다. 따라서 다음과 같은 차이가 존재합니다.
+
+~~~java
+int num1 = 1;
+int num2 = num1;
+
+num1 = 2;
+
+System.out.println(num1); //2
+System.out.println(num2); //1
+~~~
+
+원시타입은 변수에 값이 저장되기 때문에 다른 변수로 값을 복사하게 되면 값 자체가 복사되게 됩니다 따라서 위의 예제 처럼 num1을 num2에 할당하고 num1의 값을 바꾸게 되면 서로 다른 값이 되는 것입니다. 하지만 참조 타입의 경우는 다릅니다.
+
+~~~java
+public class Main {
+
+    public static void main(String[] args) {
+
+        Person p1 = new Person("sam");
+        Person p2 = p1;
+
+        p1.name = "park";
+
+        System.out.println(p1.name); //park
+        System.out.println(p2.name); //park
+
+    }
+
+}
+
+class Person {
+
+    String name;
+
+    public Person(String name) {
+        this.name = name;
+    }
+}
+~~~
+
+메인 메소드에서 p1이라는 인스턴스를 만들고 p2 변수에 p1를 할당했습니다. Person이라는 클래스는 name이라는 필드를 가지고 있어서 sam이라는 값을 넣어 주었는데 p2에 복사한 후 p1의 name을 park로 변경하게 되면 두 변수 모두 값이 park로 바뀌게 됩니다. 변수에 실제 값이 아닌 주소값이 저장되어 있어 Person 인스턴스가 공유되어지기 때문입니다. 이 것을 얕은 복사(Shallow Copy)라고 합니다. 얕은 복사를 하게 될 경우 위와 같이 하나의 인스턴스를 변경하게 되면 다른 변수에도 영향을 미치기 때문에 사용시 주의가 필요합니다. 따라서 깊은 복사(Deep Copy)를 이용하거나 새로운 인스턴스를 생성해 주는 것이 좋습니다. 여기서 깊은 복사란 주소값을 복사하는 것이 아닌 인스턴스 자체를 복사하여 다른 주소값을 서로 저장하는 것을 말합니다.
+
+#### 새로운 인스턴스 생성
+~~~java
+Person p1 = new Person("sam");
+Person p2 = new Person("sam");
+
+p1.name = "park";
+
+System.out.println(p1.name); //park
+System.out.println(p2.name); //sam
+~~~
+
+#### 깊은 복사
+깊은 복사를 사용할 클래스를 Cloeable 인터페이스를 상속 받도록 하고 clone 함수를 재 정의합니다.
+~~~java
+public class Main {
+    public static void main(String[] args) throws CloneNotSupportedException {
+
+        Person p1 = new Person("sam");
+        Person p2 = p1.clone();
+
+        p1.name = "park";
+
+        System.out.println(p1.name); //park
+        System.out.println(p2.name); //sam
+
+    }
+
+}
+
+class Person implements Cloneable {
+
+    String name;
+
+    public Person(String name) {
+        this.name = name;
+    }
+
+    public Person clone() throws CloneNotSupportedException {
+        return (Person) super.clone();
+    }
+}
+~~~
+
+
