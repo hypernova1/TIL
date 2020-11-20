@@ -376,3 +376,50 @@ int arr[] = new int[10]; //C 스타일
 ~~~
 
 ## 타입 추론, var
+
+### 타입 추론
+타입 추론이란 개발자가 타입을 따로 명시하지 않아도 컴파일러가 스스로 타입을 추론하는 것을 말합니다. 제네릭에서의 다이아몬드 지시자(`<>`)나 람다에서의 타입 생략 등이 이에 해당합니다.
+
+~~~java
+//다이아몬드 지시자
+Map<String, Object> map = new HashMap<>();
+
+//람다식 타입 추론
+Comparator<Integer> comparator = (a, b) -> {
+    if (a > b) {
+        return 1;
+    }
+    return -1;
+};
+~~~
+
+### var
+
+var는 JDK10에서 도입된 타입을 추론하는 타입입니다. 다시 말해 개발자가 변수 선언시 타입을 var로만 선언해 주어도 할당되는 타입에 따라 타입이 정해지는 방식입니다. 이는 똑같은 타입을 변수 선언과 할당시에 두 번할 필요가 없다는 뜻입니다.
+
+~~~java
+var i = 3;
+var str = "hello";
+var b = true;
+
+var arr = str.toCharArray(); //타입을 선언해 주지 않아도 해당 타입의 메서드 사용 가능
+
+ArrayList<Integer> list = new ArrayList<>(); //일반적인 변수 선언
+
+var list = new ArrayList<Integer>(); //var를 사용한 변수 선언
+~~~
+
+다만 컴파일시에는 변수 타입이 해당 타입으로 변경이됩니다. 즉 런타임시 동적으로 추론하는 것이 아닌 컴파일 타임에 var를 해당 타입으로 변경한 후 실행하는 것입니다.
+
+#### decompile
+~~~java
+int i = true;
+String str = "hello";
+boolean b = true;
+char[] arr = str.toCharArray();
+~~~
+
+### 참고
+
+https://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html  
+https://techdifferences.com/difference-between-type-casting-and-type-conversion.html
