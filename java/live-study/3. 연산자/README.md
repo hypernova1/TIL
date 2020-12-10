@@ -405,7 +405,7 @@ boolean result = (++a >= b) || (c > d);
 
 ## switch (Java 13)
 
-자바 13부터(12에서는 커맨드 옵션에 `--enable-preview`를 붙여야함) `switch`문을 변수에 할당할 수 있게 되었습니다.
+자바 13부터(12에서는 커맨드 옵션에 `--enable-preview`를 붙여야함) `switch`연산자가 추가 되었습니다. 기존의 `switch`문과 다르게 변수에 할당이 가능한 연산자입니다.
 
 ~~~java
 String str = "one";
