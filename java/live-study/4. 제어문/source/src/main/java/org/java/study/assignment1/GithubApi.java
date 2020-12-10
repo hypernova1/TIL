@@ -1,13 +1,21 @@
 package org.java.study.assignment1;
 
+import org.kohsuke.github.*;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 public class GithubApi {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         GitHub gitHub = new GitHubBuilder().withOAuthToken("").build();
         GHRepository repository = gitHub.getRepository("whiteship/live-study");
-
         List<GHIssue> issues = repository.getIssues(GHIssueState.ALL);
+        
         Map<String, Integer> users = new HashMap<>();
         for (GHIssue issue : issues) {
             PagedIterable<GHIssueComment> comments = issue.listComments();
