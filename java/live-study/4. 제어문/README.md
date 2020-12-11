@@ -413,8 +413,11 @@ public class GithubApi {
     }
 
 }
-
 ~~~
+
+#### 실행결과
+
+![1](images/실행결과.png)
 
 ## 과제 2. LinkedList 구현
 
