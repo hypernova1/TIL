@@ -376,10 +376,392 @@ System.out.println(arr[0]); //1
 
 ## 과제 1. 깃헙 대시 보드 만들기
 
+~~~java
+package org.java.study.assignment1;
+
+import org.kohsuke.github.*;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+public class GithubApi {
+
+    public static void main(String[] args) throws IOException {
+
+        GitHub gitHub = new GitHubBuilder().withOAuthToken("토큰").build();
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
+        List<GHIssue> issues = repository.getIssues(GHIssueState.ALL);
+        
+        Map<String, Integer> users = new HashMap<>();
+        for (GHIssue issue : issues) {
+            PagedIterable<GHIssueComment> comments = issue.listComments();
+            for (GHIssueComment comment : comments) {
+                String userName = comment.getUser().getName();
+                if (Objects.isNull(userName)) continue;
+                users.put(userName, users.getOrDefault(userName, 0) + 1);
+            }
+        }
+
+        for (Map.Entry<String, Integer> user : users.entrySet()) {
+            String value = String.format("%.2f", (user.getValue() / (float) 18) * 100);
+            System.out.println(user.getKey() + ": " + value + "%");
+        }
+
+    }
+
+}
+
+~~~
+
 ## 과제 2. LinkedList 구현
+
+### 기존의 배열
+
+기존의 배열은 논리적 순서과 물리적 순서가 같아야 한다. 즉 인덱스 0과 1을 비교해보면 1이 숫자가 더 크기 때문에 주소값도 0번째보다 뒤에 있어야 하고 만약 중간에 값을 삽입해야 한다면 해당 인덱스부터 한칸씩 뒤로 밀어내고 빈 자리에 값을 삽입해야한다. 
+
+### LinkedList
+
+LinkedList는 배열과는 다르게 각 노드의 물리적 위치와 논리적 위치가 일치하지 않다. 배열을 이용하여 만들지 않고 노드의 다음 노드를 지정해서 하나하나 다음 노드를 탐색해서 값을 찾는 방식이기 때문에 물리적인 위치가 유동적일 수 있는 것이다. 만약 중간에 값을 삽입해야 한다면 연결된 노드를 끊고 그 사이에 노드를 삽입후 앞 뒤로 포인터를 연결해주면 된다.
+
+#### ListNode 구현
+
+~~~java
+public class ListNode {
+
+    private final int value;
+    private ListNode next;
+
+    public ListNode(int value) {
+        this.value = value;
+    }
+
+    public void add(ListNode head, ListNode nodeToAdd) {
+        ListNode cur = head;
+        while (cur.next != null) {
+            cur = cur.next;
+        }
+        cur.next = nodeToAdd;
+    }
+
+    public void add(ListNode head, ListNode nodeToAdd, int position) {
+        if (position == 0) {
+            throw new RuntimeException("head 노드를 변경할 수 없습니다.");
+        }
+        if (size(head) < position) {
+            throw new ArrayIndexOutOfBoundsException();
+        } else if (size(head) == position) {
+            this.add(head, nodeToAdd);
+            return;
+        }
+
+        ListNode cur = head;
+        for (int i = 0; i < position - 1; i++) {
+            cur = cur.next;
+        }
+        nodeToAdd.next = cur.next;
+        cur.next = nodeToAdd;
+    }
+
+    public void remove(ListNode head, int position) {
+        if (position == 0) {
+            throw new RuntimeException("head 노드는 삭제할 수 없습니다.");
+        }
+        if (size(head) <= position) {
+            throw new ArrayIndexOutOfBoundsException();
+        } else if (size(head) - 1 == position) {
+            removeLastNode(head);
+            return;
+        }
+
+        ListNode prev = head;
+        for (int i = 0; i < position - 1; i++) {
+            prev = prev.next;
+        }
+
+        ListNode cur = prev.next;
+        prev.next = cur.next;
+
+    }
+
+    private void removeLastNode(ListNode head) {
+        ListNode cur = head;
+
+        while (cur.next.next != null) {
+            cur = cur.next;
+        }
+        cur.next = null;
+    }
+
+    public boolean contains(ListNode head, ListNode nodeToCheck) {
+        ListNode cur = head;
+        while (cur != null) {
+            if (cur.value == nodeToCheck.value) {
+                return true;
+            }
+            cur = cur.next;
+        }
+        return false;
+    }
+
+    public int size(ListNode head) {
+        int size = 0;
+        ListNode cur = head;
+        while (cur != null) {
+            size++;
+            cur = cur.next;
+        }
+        return size;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+
+        ListNode cur = this;
+        while (cur.next != null) {
+            sb.append(cur.value).append(",");
+            cur = cur.next;
+        }
+        sb.append(cur.value).append("]");
+
+        return sb.toString();
+    }
+
+}
+~~~
+
+위의 구현 방식은 head를 기준으로 값을 삽입하거나 삭제하기 때문에 0번 째에 노드를 삽입하거나 삭제할 수 없다. 자기 자신을 삭제할 방법이 없기 때문이다. 따라서 다음의 구현 예제와 `Node` 클래스를 따로 내부에 선언하고 `Node` 인스턴스를 사용하여 head를 만들어 사용하면 된다. 이 경우 0번째 노드는 무조건 head이기 때문에 0번 째를 삭제하려면 head의 다음 노드를 head로 지정해 주면 된다.
+
+#### Node를 사용하여 구현한 LinkedList
+
+~~~java
+public class LinkedList {
+
+    private Node head;
+    private int size;
+
+    public void add(int value) {
+        Node newNode = new Node(value);
+        if (isEmpty()) {
+            this.head = newNode;
+            size++;
+            return;
+        }
+        Node cur = this.head;
+        while (cur.next != null) {
+            cur = cur.next;
+        }
+        cur.next = newNode;
+        size++;
+    }
+
+    public int get(int index) {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        Node cur = this.head;
+        for (int i = 0; i < index; i++) {
+            cur = cur.next;
+        }
+        return cur.value;
+    }
+
+    public boolean contains(int value) {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        Node cur = this.head;
+        while (cur != null) {
+            if (cur.value == value) {
+                return true;
+            }
+            cur = cur.next;
+        }
+        return false;
+    }
+
+    public void remove(int index) {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        if (index == 0) {
+            head = head.next;
+            size--;
+            return;
+        }
+
+        Node prev = this.head;
+        Node cur = prev.next;
+        for (int i = 0; i < index - 1; i++) {
+            prev = prev.next;
+            cur = cur.next;
+        }
+        prev.next = cur.next;
+        size--;
+    }
+
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isEmpty() {
+        return this.head == null;
+    }
+
+    private static class Node {
+        private int value;
+        private Node next;
+
+        public Node(int value) {
+            this.value = value;
+        }
+    }
+
+}
+~~~
 
 ## 과제 3. Stack 구현
 
+~~~java
+public class Stack {
+
+    private final int[] values;
+    private int top;
+
+    public Stack(int size) {
+        this.values = new int[size];
+        this.top = -1;
+    }
+
+    public void push(int value) {
+        if (isFull()) {
+            throw new StackFullException();
+        }
+        this.values[++this.top] = value;
+    }
+
+    public int pop() {
+        if (isEmpty()) {
+            throw new StackEmptyException();
+        }
+        return values[this.top--];
+    }
+
+    public boolean isEmpty() {
+        return this.top == -1;
+    }
+
+    public boolean isFull() {
+        return size() == this.values.length;
+    }
+
+    public int size() {
+        return top + 1;
+    }
+
+}
+~~~
+
 ## 과제 4. LinkedList를 사용한 Stack 구현
 
+~~~java
+public class Stack {
+
+    private int top;
+    private final LinkedList list;
+    private final int size;
+
+    public Stack(int size) {
+        this.list = new LinkedList();
+        this.size = size;
+        this.top = -1;
+    }
+
+    public void push(int value) {
+        if (isFull()) {
+            throw new StackFullException();
+        }
+
+        list.add(value);
+        top++;
+    }
+
+    public int pop() {
+        if (isEmpty()) {
+            throw new StackEmptyException();
+        }
+        int result = list.get(top);
+        list.remove(top--);
+        return result;
+    }
+
+    private boolean isEmpty() {
+        return top == -1;
+    }
+
+    private boolean isFull() {
+        return this.size == top + 1;
+    }
+
+}
+~~~
+
 ## 과제 5. Queue 구현
+
+~~~java
+public class Queue {
+
+    private final int[] data;
+    private final int capacity;
+    private int front;
+    private int rear;
+    private int count;
+
+    public Queue(int capacity) {
+        this.data = new int[capacity];
+        this.capacity = capacity;
+        this.front = 0;
+        this.rear = -1;
+        this.count = 0;
+    }
+
+    public void enqueue(int value) {
+        if (isFull()) {
+            throw new IndexOutOfBoundsException();
+        }
+        this.data[++rear % capacity] = value;
+        count++;
+    }
+
+    public int dequeue() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        count--;
+        return this.data[front++ % this.capacity];
+    }
+
+    public int peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return this.data[front];
+    }
+
+    public boolean isEmpty() {
+        return this.size() == 0;
+    }
+
+    public boolean isFull() {
+        return this.size() == this.capacity;
+    }
+
+    public int size() {
+        return this.count;
+    }
+
+}
+~~~

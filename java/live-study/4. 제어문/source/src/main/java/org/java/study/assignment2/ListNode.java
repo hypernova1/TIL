@@ -9,7 +9,7 @@ public class ListNode {
         this.value = value;
     }
 
-    public void addToLast(ListNode head, ListNode nodeToAdd) {
+    public void add(ListNode head, ListNode nodeToAdd) {
         ListNode cur = head;
         while (cur.next != null) {
             cur = cur.next;
@@ -24,7 +24,7 @@ public class ListNode {
         if (size(head) < position) {
             throw new ArrayIndexOutOfBoundsException();
         } else if (size(head) == position) {
-            this.addToLast(head, nodeToAdd);
+            this.add(head, nodeToAdd);
             return;
         }
 

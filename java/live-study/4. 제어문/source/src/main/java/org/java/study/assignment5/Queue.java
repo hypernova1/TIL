@@ -6,7 +6,7 @@ import org.java.study.exception.NoSuchElementException;
 public class Queue {
 
     private final int[] data;
-    private int capacity;
+    private final int capacity;
     private int front;
     private int rear;
     private int count;
