@@ -533,6 +533,41 @@ public class ListNode {
 }
 ~~~
 
+#### 테스트 코드
+
+~~~java
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class ListNodeTest {
+
+    @Test
+    void test() {
+        ListNode head = new ListNode(1);
+
+        ListNode node1 = new ListNode(2);
+        ListNode node2 = new ListNode(3);
+        ListNode node3 = new ListNode(4);
+
+        head.add(head, node1, 1);
+        head.add(head, node2, 2);
+        head.add(head, node3, 2);
+
+        assertTrue(head.contains(head, node1));
+        assertTrue(head.contains(head, node2));
+        assertTrue(head.contains(head, node3));
+
+        assertEquals(4, head.size(head));
+
+        head.remove(head, 2);
+
+        assertEquals(3, head.size(head));
+    }
+
+}
+~~~
+
 위의 구현 방식은 head를 기준으로 값을 삽입하거나 삭제하기 때문에 0번 째에 노드를 삽입하거나 삭제할 수 없다. 자기 자신을 삭제할 방법이 없기 때문이다. 따라서 다음의 구현 예제와 `Node` 클래스를 따로 내부에 선언하고 `Node` 인스턴스를 사용하여 head를 만들어 사용하면 된다. 이 경우 0번째 노드는 무조건 head이기 때문에 0번 째를 삭제하려면 head의 다음 노드를 head로 지정해 주면 된다.
 
 #### Node를 사용하여 구현한 LinkedList
@@ -623,6 +658,36 @@ public class LinkedList {
 }
 ~~~
 
+#### 테스트 코드
+
+~~~java
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class LinkedListTest {
+
+    @Test
+    void test() {
+        LinkedList list = new LinkedList();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        assertTrue(list.contains(3));
+        assertEquals(3, list.get(2));
+        assertEquals(3, list.size());
+
+        list.remove(2);
+        list.remove(1);
+        list.remove(0);
+
+        assertEquals(0, list.size());
+    }
+
+}
+~~~
+
 ## 과제 3. Stack 구현
 
 ~~~java
@@ -660,6 +725,34 @@ public class Stack {
 
     public int size() {
         return top + 1;
+    }
+
+}
+~~~
+
+#### 테스트 코드
+
+~~~java
+import org.java.study.exception.StackEmptyException;
+import org.java.study.exception.StackFullException;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class StackTest {
+
+    @Test
+    void test() {
+        Stack stack = new Stack(3);
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        assertThrows(StackFullException.class, () -> stack.push(4));
+
+        assertEquals(3, stack.pop());
+        assertEquals(2, stack.pop());
+        assertEquals(1, stack.pop());
+        assertThrows(StackEmptyException.class, stack::pop);
     }
 
 }
@@ -707,6 +800,36 @@ public class Stack {
     }
 
 }
+~~~
+
+#### 테스트 코드
+
+~~~java
+import org.java.study.exception.StackEmptyException;
+import org.java.study.exception.StackFullException;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public class StackTest {
+
+    @Test
+    void test() {
+        Stack stack = new Stack(3);
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        assertThrows(StackFullException.class, () -> stack.push(4));
+
+        assertEquals(3, stack.pop());
+        assertEquals(2, stack.pop());
+        assertEquals(1, stack.pop());
+        assertThrows(StackEmptyException.class, stack::pop);
+    }
+
+}
+
 ~~~
 
 ## 과제 5. Queue 구현
@@ -761,6 +884,40 @@ public class Queue {
 
     public int size() {
         return this.count;
+    }
+
+}
+~~~
+
+#### 테스트 코드
+
+~~~java
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class QueueTest {
+
+    @Test
+    void test() {
+        Queue queue = new Queue(3);
+
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+
+        assertEquals(3, queue.size());
+        assertTrue(queue.isFull());
+        assertThrows(IndexOutOfBoundsException.class, () -> queue.enqueue(4));
+
+        assertEquals(1, queue.peek());
+        assertEquals(1, queue.dequeue());
+        assertEquals(2, queue.dequeue());
+        assertEquals(3, queue.dequeue());
+        assertTrue(queue.isEmpty());
+
+        queue.enqueue(1);
+        assertEquals(1, queue.size());
     }
 
 }
