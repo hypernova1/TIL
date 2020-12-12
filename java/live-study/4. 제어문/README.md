@@ -85,13 +85,13 @@ if (조건식1) {
 `if - else if - else` 문은 조건에서 공통의 범위를 체크할 때 많이 사용합니다. 이 때, `else` 문은 필수가 아닙니다. 예를 들어 상품의 금액 범위마다 포인트를 지급하는 것이 달라질 때 사용할 수 있습니다.
 
 ~~~java
-int point;
-if (item.getPrice > 10000) {
-    point = item.getPrice * 0.5;
-} else if (item.getPrice > 5000) {
-    point = item.getPrice * 0.3;
+double point;
+if (item.getPrice() > 10000) {
+    point = item.getPrice() * 0.5;
+} else if (item.getPrice() > 5000) {
+    point = item.getPrice() * 0.3;
 } else {
-    point = item.getPrice * 0.1;
+    point = item.getPrice() * 0.1;
 }
 ~~~
 
