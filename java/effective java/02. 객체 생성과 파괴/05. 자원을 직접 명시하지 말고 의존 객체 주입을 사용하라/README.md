@@ -30,9 +30,11 @@ public class SpellChecker {
 }
 ~~~
 
-두 경우 모두 단 하나의 사전만을 사용할 수 있다는 점에서 유연하지 않다. 또한 사전의 경우에는 어휘용 사전도 필요할수 있으며, 테스트용 사전이 필요할 수도 있다. 여러 의존성이 필요할 경우에는 `dictionary` 필드의 `final` 한정자를 제거하고 다른 사전으로 교체하는 메서드를 추가할 수 있지만 이 방식은 오류가 발생하기 쉬우며(인스턴스 생성 시점에 완전하지 않기 때문에) 멀티스레드 환경에서는 사용할 수 없다. 따라서 사용하는 자원(의존성)에 따라 동작이 달라지는 **클래스를 정적 유틸리티 클래스나 싱글턴 방식이 적합하지 않다.**
+두 경우 모두 단 하나의 사전만을 사용할 수 있다는 점에서 유연하지 않다. 또한 사전의 경우에는 어휘용 사전도 필요할수 있으며, 테스트용 사전이 필요할 수도 있다. 여러 의존성이 필요할 경우에는 `dictionary` 필드의 `final` 한정자를 제거하고 다른 사전으로 교체하는 메서드를 추가할 수 있지만 이 방식은 오류가 발생하기 쉬우며(인스턴스 생성 시점에 완전하지 않기 때문에) 멀티스레드 환경에서는 사용할 수 없다. 따라서 **사용하는 자원(의존성)에 따라 동작이 달라지는 클래스에 정적 유틸리티 클래스나 싱글턴 방식을 사용하는 것은 적합하지 않다.**
 
-클래스(SpellChecker)가 여러 자원 인스턴스를 지원하며, 클라이언트가 원하는 자원(dictionary)를 사용하려면 **인스턴스를 생성시 생성자에 필요한 자원을 넘겨주는 방식**을 쓰면 된다. 이를 의존 객체를 주입했다고 표현하며, 맞춤법 검사기를 사용할 때 의존 객체인 사전을 주입해주면 된다.
+## 의존 객체 주입
+
+클래스(SpellChecker)가 여러 자원 인스턴스를 지원하며, 클라이언트가 원하는 자원(dictionary)를 사용하려면 인스턴스를 생성시 생성자에 필요한 자원을 넘겨주는 방식을 쓰면 된다. 이를 의존 객체를 주입했다고 표현하며, 맞춤법 검사기를 사용할 때 의존 객체인 사전을 주입해주면 된다.
 
 ~~~java
 public class SpellChecker {
@@ -53,7 +55,6 @@ Lexicon englishDictionary = new EnglishDictionaty();
 Lexicon koreanDictionary = new EnglishDictionaty();
 
 SpellChecker englishChecker = new SpellChecker(englishDictionary);
-
 SpellChecker koreanChecker = new SpellChecker(koreanDictionary);
 ~~~
 
