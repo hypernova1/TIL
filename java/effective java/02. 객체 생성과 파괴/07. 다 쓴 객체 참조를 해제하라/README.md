@@ -94,3 +94,9 @@ key = null;
 System.gc();
 System.out.println(cache.get(1000)); //null
 ~~~
+
+다만 주의할 점은 `String`의 경우 리터럴로 키를 만들게 되면 `intern` 메서드가 호출 되어 String pool에 저장되기 때문에 가비지 컬렉션이 수거해가지 않는다. 또한 Integer의 경우 -127 ~ 128 범위의 값들도 마찬가지이다.
+
+## 참고
+
+http://blog.breakingthat.com/2018/08/26/java-collection-map-weakhashmap/
